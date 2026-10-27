@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 
 const globalError = require("./middleware/globalError");
 const AppError = require("./utils/appError");
@@ -9,6 +10,9 @@ const productRoute = require("./routes/product.route");
 const app = express();
 
 console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 //* its cors middleware
 app.use(cors());
