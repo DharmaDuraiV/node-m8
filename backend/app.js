@@ -6,6 +6,7 @@ const globalError = require("./middleware/globalError");
 const AppError = require("./utils/appError");
 
 const productRoute = require("./routes/product.route");
+const authRoute = require("./routes/auth.route");
 
 const app = express();
 
@@ -20,7 +21,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/products", productRoute);
+
 
 app.all("/{*any}", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server.`, 404));
