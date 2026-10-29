@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema({
   username: {
@@ -40,6 +41,12 @@ const userSchema = new Schema({
     type: String,
     default: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
   },
+});
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 12);
+  this.confirmPassword = undefined;
 });
 
 const User = model("Users", userSchema);
